@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: spring-boot-dubbo-provider
+  main:
+    allow-bean-definition-overriding: true
+
+  #  zipkin
+
+  zipkin:
+    base-url:  ${JAEGER_ZIPKIN_URL}
+    service:
+      name: spring-boot-dubbo-provider
+  sleuth:
+    sampler:
+      probability: 1.0
+    enabled: true
+
+#  dubbo
+dubbo:
+  application:
+    name: spring-boot-dubbo-provider
+  registry:
+    address: nacos://${NACOS_SERVER_URL}
+    parameters:
+      namespace: ${NACOS_NAMESPACE}
+    group: ${NACOS_GROUP_NAME}
+  provider:
+    filter: tracing
+  consumer:
+    filter: tracing
+  protocol:
+    name: dubbo
+    port: 20881
+
+
